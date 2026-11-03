@@ -1,7 +1,6 @@
 import { setupWalletSelector } from '@near-wallet-selector/core';
 import { setupModal } from '@near-wallet-selector/modal-ui-js';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
-import { setupMeteorWallet } from '@near-wallet-selector/meteor-wallet';
 
 const TESTNET_CONTRACT = 'guest-book.testnet';
 const memory = new Map();
@@ -81,7 +80,7 @@ async function sendSafeTest() {
 
 async function ensureWalletAdapter() {
   if (selector) return;
-  selector = await setupWalletSelector({ network: 'testnet', modules: [setupMyNearWallet(), setupMeteorWallet()], storage: memoryStorage });
+  selector = await setupWalletSelector({ network: 'testnet', modules: [setupMyNearWallet()], storage: memoryStorage });
   modal = setupModal(selector, { contractId: TESTNET_CONTRACT, theme: 'dark', description: 'KeySentry testnet signing lab' });
   selector.on('signedIn', syncWallet);
   selector.on('accountsChanged', syncWallet);

@@ -2,7 +2,7 @@
 
 [![verify](https://github.com/hiouz/keysentry-sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/hiouz/keysentry-sentinel/actions/workflows/ci.yml)
 
-KeySentry is a NEAR testnet security guard. Its public scanner performs a one-time check of public account access keys and deployed-code hashes without saving the account ID or result. It never requests a seed phrase or private key. The optional Testnet Signing Lab opens a user-selected external wallet only after an explicit click.
+KeySentry is a NEAR testnet security guard. Its public scanner performs a one-time check of public account access keys and deployed-code hashes without saving the account ID or result. It never requests a seed phrase or private key. The optional Testnet Signing Lab opens MyNearWallet only after an explicit click.
 
 ## Run locally
 
