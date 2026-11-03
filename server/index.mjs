@@ -1,0 +1,20 @@
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createApp } from './app.mjs';
+import { createNearRpc } from './rpc.mjs';
+import { KeySentryService } from './service.mjs';
+import { JsonStore } from './store.mjs';
+import { createWebhookNotifier } from './notifier.mjs';
+
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const store = new JsonStore(process.env.KEYSENTRY_DATA || resolve(root, 'data/state.json'));
+await store.load();
+const notifier = createWebhookNotifier();
+const service = new KeySentryService({ store, rpc: createNearRpc(), notifier });
+const app = createApp({ service, publicDir: resolve(root, 'dist'), allowPersistentMonitoring: process.env.KEYSENTRY_ENABLE_PERSISTENT_MONITORING === 'true' });
+const port = Number(process.env.PORT || 4174);
+const host = process.env.HOST || '127.0.0.1';
+const timer = setInterval(() => service.pollDue(), 5000);
+timer.unref();
+app.listen(port, host, () => console.log(`KeySentry listening on http://${host}:${port} · webhook ${notifier.configured ? 'configured' : 'not configured'}`));
+for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => app.close(() => process.exit(0)));

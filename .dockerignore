@@ -1,0 +1,8 @@
+data/
+test/
+contract/
+build/
+node_modules/
+.git/
+.openai/
+SUBMISSION.md

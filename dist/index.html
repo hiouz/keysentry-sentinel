@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071411" />
+    <meta name="description" content="KeySentry: read-only security monitoring and deterministic transaction preflight for NEAR accounts." />
+    <title>KeySentry — NEAR security state, explained</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="KeySentry home"><span class="mark">K</span><span>KEYSENTRY</span><i>·</i><small>NEAR SECURITY MONITOR</small></a>
+      <div class="readonly"><span></span> READ-ONLY · NO SEED PHRASES</div>
+    </header>
+
+    <main id="top">
+      <section class="intro">
+        <div><p class="eyebrow">A SECURITY GUARD FOR NEAR ACCOUNTS</p><h1>See the permission<br><em>before the damage.</em></h1><p>KeySentry turns invisible account permissions and transaction actions into clear, deterministic security decisions.</p></div>
+        <div class="threat-card"><span>LIVE SECURITY MODEL</span><strong>KEYS<br>CODE<br>ACTIONS</strong><p>Check public permissions. Decode a transaction. Know what signing changes.</p></div>
+      </section>
+
+      <section class="proof-strip"><span>NO PRIVATE KEY REQUIRED</span><span>•</span><span>ONE-TIME RPC CHECK</span><span>•</span><span>NO ID STORAGE</span><span>•</span><span>POLICY-GATED PREFLIGHT</span><span>•</span><span>PUBLIC-PERMISSION MODEL</span></section>
+
+      <section class="console" id="console">
+        <div class="console-head"><div><p class="eyebrow">01 / ACCOUNT SCAN</p><h2>Inspect an account</h2></div><span class="network-dot">NEAR TESTNET RPC</span></div>
+        <form id="scanForm" class="scan-form" autocomplete="off"><label for="account">ACCOUNT ID</label><input id="account" name="near-account-id" value="" placeholder="example.testnet" autocomplete="off" autocapitalize="none" spellcheck="false" /><button class="primary" type="submit">SCAN SECURITY STATE <span>→</span></button></form>
+        <p class="field-note">One-time private check: the ID is sent only to NEAR RPC for this result and is not saved by KeySentry. Never paste a seed phrase or private key.</p>
+
+        <div class="loading" id="loading" hidden><i></i><span>QUERYING PUBLIC NEAR RPC…</span></div>
+        <div class="error" id="error" hidden></div>
+        <section class="scan-results" id="scanResults" hidden aria-live="polite">
+          <div class="summary-card"><div class="score-ring" id="scoreRing"><strong id="score">—</strong><span>/100</span></div><div><span class="muted-label">ACCOUNT SECURITY POSTURE</span><h3 id="posture">Awaiting scan</h3><p id="postureText">A score explains visible account risk; it does not certify an account or contract as safe.</p></div><div class="snapshot"><span>SNAPSHOT BLOCK</span><code id="block">—</code><span>CODE HASH</span><code id="codeHash">—</code></div></div>
+          <div class="risk-grid">
+            <article><span class="number" id="fullAccess">—</span><p>FULL-ACCESS<br>KEYS</p></article><article><span class="number" id="functionKeys">—</span><p>FUNCTION-CALL<br>KEYS</p></article><article><span class="number" id="unscopedKeys">—</span><p>UNSCOPED<br>METHOD LISTS</p></article><article><span class="number" id="driftCount">—</span><p>LOCAL<br>SIMULATIONS</p></article>
+          </div>
+          <div class="list-head"><span>ONE-TIME ACCESS-KEY REVIEW · NOT SAVED</span><div><button class="ghost danger" type="button" id="simulateDrift">SIMULATE KEY DRIFT</button></div></div>
+          <div id="keyList" class="key-list"></div>
+          <section class="incident" id="incident"><div class="incident-label"><span id="incidentLevel">NO ACTIVE INCIDENT</span><small id="watchStatus">ONE-TIME CHECK</small></div><div><h3 id="incidentTitle">Check public permissions before signing.</h3><p id="incidentCopy">KeySentry uses only the current public state returned by NEAR RPC for this screen.</p></div><button class="response-button" type="button" id="responseButton" hidden>OPEN RESPONSE PLAN →</button></section>
+          <section class="response-plan" id="responsePlan" hidden><div><p class="eyebrow">IMMEDIATE RESPONSE PLAN</p><h3 id="responseTitle">Review before taking action</h3><p id="responseText"></p></div><ol id="responseSteps"></ol></section>
+          <section class="path-panel" id="pathPanel"><div class="path-head"><div><p class="eyebrow">PERMISSION ATTACK-PATH MODEL</p><h3>What each public key can reach</h3></div><div class="path-score"><strong id="attackScore">—</strong><span>/100 EXPOSURE</span></div></div><p id="attackBoundary">A scan is required before modelling permission reachability.</p><div id="attackList" class="attack-list"></div></section>
+          <p class="live-note">Live result from public RPC. This one-time check is not written to KeySentry storage. “Simulate key drift” is local, visibly labelled, and never changes a real account.</p>
+        </section>
+      </section>
+
+      <section class="preflight">
+        <div class="preflight-copy"><p class="eyebrow">02 / TRANSACTION PREFLIGHT</p><h2>Don’t sign a black box.</h2><p>Paste a structured NEAR action preview. For a scanned account, KeySentry applies its restrictive policy before a wallet signature.</p><div class="rule-list"><span>• ADD FULL-ACCESS KEY → BLOCKED BY DEFAULT</span><span>• DEPLOY CONTRACT → BLOCKED BY DEFAULT</span><span>• DELETE KEY → REVIEW REQUIRED</span><span>• UNKNOWN ACTION → FAIL CLOSED</span></div></div>
+        <div class="preflight-tool"><label for="transaction">ACTION PREVIEW JSON</label><textarea id="transaction" spellcheck="false">{
+  "receiver_id": "unknown-contract.testnet",
+  "actions": [
+    {"type": "AddKey", "permission": "FullAccess"},
+    {"type": "Transfer", "amount": "25 NEAR"}
+  ]
+}</textarea><button class="primary" id="analyze" type="button">CHECK BEFORE SIGNING <span>→</span></button><div class="preflight-result" id="preflightResult" hidden></div></div>
+      </section>
+
+      <section class="wallet-lab">
+        <div><p class="eyebrow">03 / TESTNET SIGNING LAB</p><h2>Prove the guard sits before the wallet.</h2><p>A genuine NEAR testnet wallet is optional for the safe-signature step. KeySentry first evaluates a decoded action. A full-access-key request is blocked without sending any request to the wallet; a self-transfer needs a second, explicit confirmation.</p><div class="rule-list"><span>• REAL TESTNET WALLET SELECTOR</span><span>• NO SEED PHRASE OR PRIVATE KEY</span><span>• 1 YOCTONEAR SELF-TRANSFER ONLY</span><span>• IN-MEMORY KEYSENTRY SESSION</span></div></div>
+        <div class="wallet-tool"><p class="wallet-label">CONTROLLED SIGNING DEMO</p><p class="wallet-status" id="walletStatus">NO WALLET CONNECTED · KEYSENTRY DOES NOT STORE A WALLET SESSION</p><div class="wallet-actions"><button class="primary" id="connectWallet" type="button">CONNECT TESTNET WALLET <span>→</span></button><button class="ghost danger" id="runBlockDemo" type="button">RUN FULL-ACCESS BLOCK DEMO</button><button class="ghost" id="sendSafeTest" type="button" disabled>SEND 1 YOCTO TO SELF</button></div><p class="field-note">The public scanner never initializes a wallet. Connecting opens an external wallet integration, which may maintain its own session. A wallet is never called for a block; the self-transfer can use a tiny amount but still has testnet gas.</p><div class="wallet-result" id="walletResult" hidden aria-live="polite"></div></div>
+      </section>
+
+      <section class="how"><p class="eyebrow">WHAT IT PROTECTS AGAINST</p><div class="how-grid"><article><b>01</b><h3>Silent key changes</h3><p>Detect a new full-access key, a removed recovery key, or a function key that becomes broader than your baseline.</p></article><article><b>02</b><h3>Permission attack paths</h3><p>Model the public receiver and method surface each key can reach, then identify where a changed contract needs revalidation.</p></article><article><b>03</b><h3>Blind signing</h3><p>Translate visible transaction actions into irreversible consequences before the user approves them.</p></article></div></section>
+    </main>
+    <footer><span>KEYSENTRY / NEAR HACKATHON PROTOTYPE</span><span>READ-ONLY SECURITY TOOL · NOT A SMART-CONTRACT AUDIT</span></footer>
+    <script type="module" src="./app.js"></script>
+    <script type="module" src="./wallet-demo.js"></script>
+  </body>
+</html>

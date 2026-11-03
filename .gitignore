@@ -1,0 +1,6 @@
+data/state.json
+data/state.json.tmp
+node_modules/
+contract/
+npm-debug.log*
+.DS_Store

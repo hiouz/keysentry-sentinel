@@ -1,0 +1,22 @@
+{
+  "name": "keysentry-near-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "build:wallet-demo": "node scripts/build-wallet-demo.mjs",
+    "build": "npm run build:wallet-demo",
+    "check": "node --check dist/app.js && node --check dist/rules.mjs && node --check client/wallet-demo.mjs && node --check scripts/build-wallet-demo.mjs && node --check scripts/release-verify.mjs && node --check server/index.mjs && node --check server/app.mjs && node --check server/service.mjs && node --check server/notifier.mjs && node --check server/attack-paths.mjs && node --check server/decision.mjs && node --check sdk/keysentry.mjs",
+    "release:verify": "node scripts/release-verify.mjs",
+    "start": "node server/index.mjs"
+  },
+  "dependencies": {
+    "@near-wallet-selector/core": "^10.1.4",
+    "@near-wallet-selector/meteor-wallet": "^10.1.4",
+    "@near-wallet-selector/modal-ui-js": "^10.1.4",
+    "@near-wallet-selector/my-near-wallet": "^10.1.4",
+    "buffer": "^6.0.3",
+    "esbuild": "^0.28.2",
+    "util": "^0.12.5"
+  }
+}
