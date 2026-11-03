@@ -5,7 +5,7 @@
 - **Project name:** KeySentry Sentinel
 - **Track:** AI Security & Defense
 - **Website:** `<PUBLIC_HTTPS_DEMO_URL>`
-- **Repository link:** `<PUBLIC_GITHUB_REPOSITORY_URL>`
+- **Repository link:** https://github.com/hiouz/keysentry-sentinel
 - **Demo post link:** `<PUBLIC_X_POST_URL>`
 
 ### What did you build?
@@ -16,7 +16,7 @@ KeySentry Sentinel is a privacy-first NEAR security guard for autonomous agents 
 
 - [ ] Replace every `<...>` placeholder above.
 - [ ] Enter your own **testnet or main NEAR prize wallet address** in the official form; it is only the prize destination, not a connection request.
-- [ ] Push this repository to GitHub and set it **Public**.
+- [x] Public repository: https://github.com/hiouz/keysentry-sentinel
 - [ ] Deploy the Docker image to stable HTTPS hosting. Do not use a temporary quick-tunnel URL for the final form.
 - [ ] Post the demo video or screenshots on X, including `@NEARProtocol` and `#NEARHackathon`.
 - [ ] Attach the public GitHub and X-post links to the official form.
